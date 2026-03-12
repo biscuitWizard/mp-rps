@@ -12,7 +12,8 @@ public class LoginHandler : MessageHandler<LoginMessage>
 
     protected override MessageBase[] HandleMessage(ClientSession sender, LoginMessage message)
     {
-        if (message.Username != ValidUsername || message.Password != ValidPassword)
+        if (!string.Equals(message.Username, ValidUsername, StringComparison.OrdinalIgnoreCase)
+            || message.Password != ValidPassword)
         {
             Debug.Log($"[LoginHandler] Failed login attempt for '{message.Username}'");
 

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.IO;
 using System.Net.Sockets;
 using System.Threading;
@@ -24,6 +25,15 @@ public class ClientSession
     public string Username { get; set; }
     public bool IsAuthenticated { get; set; }
     public bool Connected => _connected && _client.Connected;
+
+    /// <summary>
+    /// The server-side opponent's remaining hand. Cards are removed as
+    /// they are played so each card can only be used once per match.
+    /// </summary>
+    public List<CardType> OpponentHand { get; private set; } = new()
+    {
+        CardType.Rock, CardType.Paper, CardType.Scissors
+    };
 
     public ClientSession(TcpClient client, ConcurrentQueue<(ClientSession, string)> incomingQueue)
     {
